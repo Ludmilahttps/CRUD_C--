@@ -7,7 +7,7 @@ int menu();
 int print(vector<string> &list);
 int search_string(vector<string> &list);
 int search_substring(vector<string> &list);
-int remove_string(vector<string> &list);
+int remove_string(vector<string> &list, int remove);
 int remove_substring(vector<string> &list);
 
 int main()
@@ -50,7 +50,11 @@ int main()
         if (option == 5)
         {
             cout << "5. Remove string (by index)" << endl;
-            remove_string(list);
+            cout << "Enter index string to remove" << endl;
+            int remove;
+            cin >> remove;
+
+            remove_string(list, remove);
             continue;
         }
         if (option == 6)
@@ -119,32 +123,31 @@ int search_string(vector<string> &list)
 int search_substring(vector<string> &list)
 {
     string subsearch;
-    int find = 0;
+    bool find = false;
 
     cout << "Enter substring to search" << endl;
     cin >> subsearch;
 
     for (size_t i = 0; i < list.size(); i++)
     {
-        if (list.at(i) == subsearch)
+        string word = list.at(i);
+
+        if (word.find(subsearch) < word.length())
         {
-            find++;
-            cout << subsearch << endl;
+            cout << list.at(i) << endl;
+            find = true;
         }
     }
-    if (find == 0)
+
+    if (find == false)
     {
-        cout << "string not found" << endl;
+        cout << "Substring not found" << endl;
     }
 }
 
-int remove_string(vector<string> &list)
+int remove_string(vector<string> &list, int remove)
 {
-    int remove;
     bool find = false;
-
-    cout << "Enter index string to remove" << endl;
-    cin >> remove;
 
     for (size_t i = 0; i < list.size(); i++)
     {
@@ -164,7 +167,26 @@ int remove_string(vector<string> &list)
 int remove_substring(vector<string> &list)
 {
     string subremove;
+    bool find = false;
+    vector<size_t> aux;
 
-    cout << "Enter substring to remove" << endl;
+    cout << "Enter substring to remove all string with it" << endl;
     cin >> subremove;
+
+    for (size_t i = 0; i < list.size(); i++)
+    {
+        string word = list.at(i);
+
+        if (word.find(subremove) < word.length())
+        {
+            find = true;
+            remove_string(list, i);
+            return 0;
+        }
+    }
+
+    if (find == false)
+    {
+        cout << "Substring not found" << endl;
+    }
 }
