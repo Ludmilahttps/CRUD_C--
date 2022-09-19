@@ -61,7 +61,7 @@ int main()
         {
             cout << "6. Remove by substrings (all occurrences)" << endl;
             remove_substring(list);
-            break;
+            continue;
         }
         if (option == 0)
         {
@@ -168,7 +168,6 @@ int remove_substring(vector<string> &list)
 {
     string subremove;
     bool find = false;
-    vector<size_t> aux;
 
     cout << "Enter substring to remove all string with it" << endl;
     cin >> subremove;
@@ -181,10 +180,9 @@ int remove_substring(vector<string> &list)
         {
             find = true;
             remove_string(list, i);
-            return 0;
+            i--;
         }
     }
-
     if (find == false)
     {
         cout << "Substring not found" << endl;
