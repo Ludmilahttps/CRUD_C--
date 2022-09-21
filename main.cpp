@@ -9,12 +9,18 @@ int search_string(vector<string> &list);
 int search_substring(vector<string> &list);
 int remove_string(vector<string> &list, int remove);
 int remove_substring(vector<string> &list);
+bool LoadDataBase(string filename, vector<string> &list);
+bool SaveDataBase(string filename, vector<string> &list);
 
 int main()
 {
-    int varwhile = 1;
     vector<string> list;
     int option;
+
+    if (LoadDataBase("database.txt", list) == false)
+    {
+        cout << "Welcome, this is your first acess" << endl;
+    }
 
     do
     {
@@ -66,7 +72,11 @@ int main()
         if (option == 0)
         {
             cout << "Quit" << endl;
-            varwhile = 0;
+            if (!SaveDataBase(filename, list))
+            {
+                cout << "ERROR" << endl;
+            }
+            break;
         }
     } while (option != 0);
     return 0;
@@ -149,13 +159,20 @@ int remove_string(vector<string> &list, int remove)
 {
     bool find = false;
 
-    for (size_t i = 0; i < list.size(); i++)
+    if (remove < list.size())
     {
-        if (list.at(i) == list.at(remove))
+        for (size_t i = 0; i < list.size(); i++)
         {
-            list.erase(list.begin() + i);
-            find = true;
+            if (list.at(i) == list.at(remove))
+            {
+                list.erase(list.begin() + i);
+                find = true;
+            }
         }
+    }
+    else
+    {
+        cout << "Idiot !!!!, Invalid Index !" << endl;
     }
 
     if (find == false)
@@ -169,7 +186,7 @@ int remove_substring(vector<string> &list)
     string subremove;
     bool find = false;
 
-    cout << "Enter substring to remove all string with it" << endl;
+    cout << "Enter substring to removal" << endl;
     cin >> subremove;
 
     for (size_t i = 0; i < list.size(); i++)
@@ -187,4 +204,20 @@ int remove_substring(vector<string> &list)
     {
         cout << "Substring not found" << endl;
     }
+}
+
+bool LoadDataBase(string filename, vector<string> &list)
+{
+    ofstream filereader(filename);
+    if(filereader .is_open())
+    {
+        string aux;
+        while(getline(filereader, aux))
+        {
+            list.push_back(aux);
+        }
+    }
+}
+bool SaveDataBase(string filename, vector<string> &list)
+{
 }
