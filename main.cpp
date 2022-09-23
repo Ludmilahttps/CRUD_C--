@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <fstream>
 
 using namespace std;
 
@@ -19,7 +20,7 @@ int main()
 
     if (LoadDataBase("database.txt", list) == false)
     {
-        cout << "Welcome, this is your first acess" << endl;
+        cout << "Database file not found, creating a new database" << endl;
     }
 
     do
@@ -72,11 +73,14 @@ int main()
         if (option == 0)
         {
             cout << "Quit" << endl;
-            if (!SaveDataBase(filename, list))
+            if (!SaveDataBase("database.txt", list))
             {
                 cout << "ERROR" << endl;
             }
-            break;
+            else
+            {
+                break;
+            }
         }
     } while (option != 0);
     return 0;
@@ -208,16 +212,36 @@ int remove_substring(vector<string> &list)
 
 bool LoadDataBase(string filename, vector<string> &list)
 {
-    ofstream filereader(filename);
-    if(filereader .is_open())
+    ifstream filereader(filename);
+    if (filereader.is_open())
     {
         string aux;
-        while(getline(filereader, aux))
+        while (getline(filereader, aux))
         {
             list.push_back(aux);
         }
+        filereader.close();
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }
 bool SaveDataBase(string filename, vector<string> &list)
 {
+    ofstream filewritter(filename);
+    if (filewritter.is_open())
+    {
+        for (size_t i = 0; i < list.size(); i++)
+        {
+            filewritter << list.at(i) << endl;
+        }
+        filewritter.close();
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
